@@ -3,136 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JIALING | Visual Designer crafting brands for the future</title>
+    <title>JIALING | Visual Designer Portfolio</title>
     <style>
         :root {
             --accent: #fff;
-            --secondary: #888;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #050505;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body { background: #000; color: #fff; font-family: "SF Pro Display", -apple-system, sans-serif; line-height: 1.5; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: var(--bg-dark); color: #fff; font-family: "SF Pro Display", sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- 导航栏 (大厂极简风格) --- */
+        /* --- 1. 液态动态背景 --- */
+        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .blob {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(80px);
+            animation: move 25s infinite alternate ease-in-out;
+        }
+        @keyframes move {
+            0% { transform: translate(-10%, -10%); }
+            100% { transform: translate(30%, 20%); }
+        }
+
+        /* --- 2. 玻璃导航栏 --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 30px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: linear-gradient(to bottom, #000, transparent);
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1000px; padding: 15px 30px;
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
-        .nav-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 1px; }
-        .nav-logo img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); }
-        .nav-links { display: flex; gap: 40px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
-        .nav-links a { color: var(--secondary); text-decoration: none; transition: 0.3s; }
-        .nav-links a:hover { color: #fff; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .nav-logo img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); }
+        .nav-links { display: flex; gap: 30px; font-size: 13px; letter-spacing: 1px; }
+        .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* --- Hero Section (价值表达) --- */
-        .hero {
-            height: 100vh; padding: 0 5%;
-            display: flex; flex-direction: column; justify-content: center;
-            position: relative;
-        }
-        .hero-label { font-size: 12px; color: var(--secondary); letter-spacing: 5px; margin-bottom: 20px; text-transform: uppercase; }
-        .hero h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: 0.9; letter-spacing: -4px; margin-bottom: 30px; }
-        .hero h1 span { color: var(--secondary); font-weight: 300; }
-        .hero-sub { max-width: 600px; color: var(--secondary); font-size: 1.1rem; margin-bottom: 40px; }
-        
+        /* --- 3. 英雄区 (Hero Section) --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
+        .hero-label { font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 4px; margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; letter-spacing: -3px; }
+        .hero h1 span { color: rgba(255,255,255,0.2); }
+        .hero-sub { max-width: 650px; margin: 30px 0 50px; color: rgba(255,255,255,0.6); font-size: 1.1rem; line-height: 1.6; }
+
         .cta-group { display: flex; gap: 20px; }
-        .btn { padding: 15px 35px; border-radius: 100px; text-decoration: none; font-size: 14px; transition: 0.4s; border: 1px solid var(--border); }
-        .btn-primary { background: #fff; color: #000; border: none; }
-        .btn-primary:hover { transform: scale(1.05); background: #eee; }
-        .btn-secondary { color: #fff; }
-        .btn-secondary:hover { background: var(--glass); }
+        .btn { 
+            padding: 16px 35px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); border: 1px solid var(--border);
+        }
+        .btn-primary { background: #fff; color: #000; }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+        .btn-secondary { color: #fff; background: var(--glass); backdrop-filter: blur(10px); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 
-        /* --- 作品集网格 (战略排版) --- */
-        .work-grid { padding: 100px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        /* --- 4. 作品展示区 (作品卡片强化) --- */
+        .work-section { padding: 100px 10%; }
+        .section-title { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; }
         
-        .work-card { text-decoration: none; color: #fff; position: relative; }
-        .work-img { 
-            width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 12px; 
-            overflow: hidden; margin-bottom: 25px; border: 1px solid var(--border);
-            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .work-card { 
+            background: var(--glass); border: 1px solid var(--border); border-radius: 30px;
+            padding: 15px; text-decoration: none; color: #fff; transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative; overflow: hidden;
         }
-        .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 1s; }
-        .work-card:hover .work-img img { transform: scale(1.05); opacity: 1; }
-        .work-card:hover .work-img { border-color: rgba(255,255,255,0.2); }
+        .work-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+        
+        .work-img { width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 20px; overflow: hidden; }
+        .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 1s; }
+        .work-card:hover .work-img img { transform: scale(1.08); opacity: 1; }
 
+        .work-info { padding: 25px 15px 15px; }
         .work-info h3 { font-size: 1.5rem; margin-bottom: 8px; }
-        .work-info p { color: var(--secondary); font-size: 14px; letter-spacing: 1px; }
+        .work-info p { color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 1px; }
 
-        /* --- Footer --- */
-        footer { padding: 100px 5%; border-top: 1px solid var(--border); text-align: center; }
-        .footer-title { font-size: 2rem; margin-bottom: 20px; }
-        .email-link { color: #fff; font-size: 1.5rem; text-decoration: underline; text-underline-offset: 10px; }
+        /* --- 5. 鼠标跟随器 --- */
+        #cursor { width: 15px; height: 15px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s; }
 
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .work-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-        }
     </style>
 </head>
 <body>
 
+    <div id="cursor"></div>
+    <div class="bg-container">
+        <div class="blob" style="top: 10%; left: 10%;"></div>
+        <div class="blob" style="bottom: 10%; right: 10%; animation-delay: -5s;"></div>
+    </div>
+
     <nav>
         <div class="nav-logo">
-            <img src="ip.png" alt="Logo"> <span>JIALING W.</span>
+            <img src="ip.png" alt="IP">
+            <span>JIALING W.</span>
         </div>
         <div class="nav-links">
-            <a href="#work">View Work</a>
-            <a href="#about">About</a>
-            <a href="mailto:your-email@example.com">Contact</a>
+            <a href="#work-01">PANTENE</a>
+            <a href="#work-02">GIFTBOX</a>
+            <a href="#about">ABOUT</a>
+            <a href="mailto:your-email@example.com">CONTACT</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="hero-label">Visual Designer</div>
+        <div class="hero-label">Visual Designer / Artist</div>
         <h1>Crafting brands<br><span>for the future.</span></h1>
-        <p class="hero-sub">Jialing Wang. 专注于品牌视觉系统升级与数字化艺术设计，通过审美与逻辑的融合，为品牌创造长久价值。</p>
+        <p class="hero-sub">Jialing Wang. 专注于品牌视觉系统升级与数字化艺术设计。通过液态美学与逻辑叙事的交织，为品牌赋予更具生命力的数字化表达。</p>
         <div class="cta-group">
-            <a href="#work" class="btn btn-primary">探索作品</a>
-            <a href="mailto:your-email@example.com" class="btn btn-secondary">点击投递</a>
+            <a href="#work-01" class="btn btn-primary">查看作品集</a>
+            <a href="mailto:your-email@foxmail.com" class="btn btn-secondary">联系邮箱</a>
         </div>
     </section>
 
-    <section class="work-grid" id="work">
-        <a href="#" class="work-card">
-            <div class="work-img">
-                <img src="pantene-kv.jpg" alt="Pantene Project">
-            </div>
-            <div class="work-info">
-                <h3>Pantene Campaign Upgrade</h3>
-                <p>BRANDING / VISUAL SYSTEM / 2026</p>
-            </div>
-        </a>
-
-        <a href="#" class="work-card">
-            <div class="work-img">
-                <img src="gift-box.jpg" alt="Luxury Packaging">
-            </div>
-            <div class="work-info">
-                <h3>高端礼盒包装设计</h3>
-                <p>PACKAGING / LUXURY RETAIL</p>
-            </div>
-        </a>
+    <section class="work-section">
+        <p class="section-title">Selected Projects</p>
+        <div class="work-grid">
+            <a href="#details" class="work-card" id="work-01">
+                <div class="work-img">
+                    <img src="pantene-kv.jpg" alt="Pantene Upgrade">
+                </div>
+                <div class="work-info">
+                    <h3>Pantene Campaign Upgrade</h3>
+                    <p>BRANDING / VISUAL SYSTEM / 2026</p>
+                </div>
+            </a>
+            <a href="#details" class="work-card" id="work-02">
+                <div class="work-img">
+                    <img src="gift-box.jpg" alt="Luxury Box">
+                </div>
+                <div class="work-info">
+                    <h3>高端礼盒包装设计</h3>
+                    <p>PACKAGING DESIGN / LUXURY</p>
+                </div>
+            </a>
+        </div>
     </section>
 
-    <footer>
-        <p class="footer-title">让我们聊聊新的创意？</p>
-        <a href="mailto:your-email@example.com" class="email-link">jialing_design@foxmail.com</a>
-        <p style="margin-top: 50px; color: var(--secondary); font-size: 12px;">© 2026 JIALING. Built with Code & Passion.</p>
-    </footer>
-
     <script>
-        // 极简平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+        const cursor = document.getElementById('cursor');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 交互增强：按钮缩放
+        document.querySelectorAll('a, .btn').forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.style.transform = 'scale(4)');
+            link.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
         });
     </script>
 </body>
