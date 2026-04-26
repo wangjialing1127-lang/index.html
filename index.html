@@ -3,163 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JIALING | 未来主义作品集</title>
+    <title>JIALING | Visual Designer crafting brands for the future</title>
     <style>
         :root {
-            --accent: #fff700;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --accent: #fff;
+            --secondary: #888;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background: #000; color: #fff; font-family: "Inter", -apple-system, sans-serif; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        body { background: #000; color: #fff; font-family: "SF Pro Display", -apple-system, sans-serif; line-height: 1.5; overflow-x: hidden; }
 
-        /* --- 1. 液态背景系统 --- */
-        .bg-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #080808, #000);
-            z-index: -2;
-        }
-
-        /* 模拟参考图中的液态光影 */
-        .liquid-blob {
-            position: absolute; width: 600px; height: 600px;
-            background: linear-gradient(135deg, rgba(0, 230, 255, 0.15), rgba(255, 0, 255, 0.1));
-            filter: blur(80px); border-radius: 50%;
-            animation: move 20s infinite alternate ease-in-out;
-            z-index: -1;
-        }
-
-        @keyframes move {
-            from { transform: translate(-10%, -10%) rotate(0deg); }
-            to { transform: translate(20%, 10%) rotate(360deg); }
-        }
-
-        /* --- 2. 自定义鼠标 --- */
-        #cursor { width: 20px; height: 20px; border: 1.5px solid #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.1s; mix-blend-mode: difference; }
-
-        /* --- 3. 玻璃导航栏 --- */
+        /* --- 导航栏 (大厂极简风格) --- */
         nav {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 1200px; padding: 20px 40px;
-            background: var(--glass); border: 1px solid var(--border);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            position: fixed; top: 0; width: 100%; padding: 30px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: linear-gradient(to bottom, #000, transparent);
         }
+        .nav-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 1px; }
+        .nav-logo img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); }
+        .nav-links { display: flex; gap: 40px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a { color: var(--secondary); text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: #fff; }
 
-        /* --- 4. 英雄展示区 (重点：模拟 3D 悬浮) --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-
-        .ip-stage {
-            position: relative; width: 300px; height: 300px;
-            display: flex; justify-content: center; align-items: center;
+        /* --- Hero Section (价值表达) --- */
+        .hero {
+            height: 100vh; padding: 0 5%;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative;
         }
+        .hero-label { font-size: 12px; color: var(--secondary); letter-spacing: 5px; margin-bottom: 20px; text-transform: uppercase; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: 0.9; letter-spacing: -4px; margin-bottom: 30px; }
+        .hero h1 span { color: var(--secondary); font-weight: 300; }
+        .hero-sub { max-width: 600px; color: var(--secondary); font-size: 1.1rem; margin-bottom: 40px; }
+        
+        .cta-group { display: flex; gap: 20px; }
+        .btn { padding: 15px 35px; border-radius: 100px; text-decoration: none; font-size: 14px; transition: 0.4s; border: 1px solid var(--border); }
+        .btn-primary { background: #fff; color: #000; border: none; }
+        .btn-primary:hover { transform: scale(1.05); background: #eee; }
+        .btn-secondary { color: #fff; }
+        .btn-secondary:hover { background: var(--glass); }
 
-        /* 模拟参考图中的底座光影 */
-        .ip-stage::before {
-            content: ''; position: absolute; bottom: 10%; width: 150px; height: 40px;
-            background: rgba(255, 247, 0, 0.2); filter: blur(20px); border-radius: 50%;
-            animation: shadowPulse 3s infinite ease-in-out;
+        /* --- 作品集网格 (战略排版) --- */
+        .work-grid { padding: 100px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        
+        .work-card { text-decoration: none; color: #fff; position: relative; }
+        .work-img { 
+            width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 12px; 
+            overflow: hidden; margin-bottom: 25px; border: 1px solid var(--border);
+            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
+        .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 1s; }
+        .work-card:hover .work-img img { transform: scale(1.05); opacity: 1; }
+        .work-card:hover .work-img { border-color: rgba(255,255,255,0.2); }
 
-        .ip-stage video {
-            width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8));
-            animation: float 4s infinite ease-in-out;
+        .work-info h3 { font-size: 1.5rem; margin-bottom: 8px; }
+        .work-info p { color: var(--secondary); font-size: 14px; letter-spacing: 1px; }
+
+        /* --- Footer --- */
+        footer { padding: 100px 5%; border-top: 1px solid var(--border); text-align: center; }
+        .footer-title { font-size: 2rem; margin-bottom: 20px; }
+        .email-link { color: #fff; font-size: 1.5rem; text-decoration: underline; text-underline-offset: 10px; }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .work-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero h1 {
-            font-size: 5rem; font-weight: 800; letter-spacing: -3px; margin-top: -20px;
-            background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.3));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        /* --- 5. 液态卡片展示区 --- */
-        .projects { padding: 100px 10%; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
-
-        .card {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 40px;
-            padding: 10px; transition: 0.5s; position: relative; overflow: hidden;
-        }
-
-        /* 参考图中的微光勾边效果 */
-        .card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: scale(1.02) translateY(-10px);
-        }
-
-        .card-inner {
-            background: rgba(0,0,0,0.4); border-radius: 32px; padding: 30px; height: 100%;
-        }
-
-        .card-img {
-            width: 100%; height: 280px; background: #111; border-radius: 24px; margin-bottom: 20px;
-            overflow: hidden; border: 1px solid var(--border);
-        }
-
-        .card-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 1s; }
-        .card:hover .card-img img { opacity: 1; transform: scale(1.1); }
-
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-    <div class="bg-wrapper">
-        <div class="liquid-blob"></div>
-        <div class="liquid-blob" style="right: 0; bottom: 0; animation-delay: -5s;"></div>
-    </div>
-
     <nav>
-        <div style="font-weight: 800;">JIALING.</div>
-        <div style="display: flex; gap: 30px; font-size: 14px;">
-            <a href="#" style="color:#fff; text-decoration:none;">作品集</a>
-            <a href="#" style="color:#666; text-decoration:none;">个人简历</a>
+        <div class="nav-logo">
+            <img src="ip.png" alt="Logo"> <span>JIALING W.</span>
+        </div>
+        <div class="nav-links">
+            <a href="#work">View Work</a>
+            <a href="#about">About</a>
+            <a href="mailto:your-email@example.com">Contact</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="ip-stage">
-            <video autoplay loop muted playsinline>
-                <source src="ip-motion.mp4" type="video/mp4">
-            </video>
+        <div class="hero-label">Visual Designer</div>
+        <h1>Crafting brands<br><span>for the future.</span></h1>
+        <p class="hero-sub">Jialing Wang. 专注于品牌视觉系统升级与数字化艺术设计，通过审美与逻辑的融合，为品牌创造长久价值。</p>
+        <div class="cta-group">
+            <a href="#work" class="btn btn-primary">探索作品</a>
+            <a href="mailto:your-email@example.com" class="btn btn-secondary">点击投递</a>
         </div>
-        <h1>Design Fusion.</h1>
-        <p style="color: #666; letter-spacing: 5px; margin-top: 10px;">探索深色美学与流动交互的极限</p>
     </section>
 
-    <section class="projects">
-        <div class="card">
-            <div class="card-inner">
-                <div class="card-img"></div>
-                <h3 style="font-size: 1.5rem;">未来主义 UI 系统</h3>
-                <p style="color: #444; margin-top: 10px;">基于 Vision Pro 的空间设计探索</p>
+    <section class="work-grid" id="work">
+        <a href="#" class="work-card">
+            <div class="work-img">
+                <img src="pantene-kv.jpg" alt="Pantene Project">
             </div>
-        </div>
-        </section>
+            <div class="work-info">
+                <h3>Pantene Campaign Upgrade</h3>
+                <p>BRANDING / VISUAL SYSTEM / 2026</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card">
+            <div class="work-img">
+                <img src="gift-box.jpg" alt="Luxury Packaging">
+            </div>
+            <div class="work-info">
+                <h3>高端礼盒包装设计</h3>
+                <p>PACKAGING / LUXURY RETAIL</p>
+            </div>
+        </a>
+    </section>
+
+    <footer>
+        <p class="footer-title">让我们聊聊新的创意？</p>
+        <a href="mailto:your-email@example.com" class="email-link">jialing_design@foxmail.com</a>
+        <p style="margin-top: 50px; color: var(--secondary); font-size: 12px;">© 2026 JIALING. Built with Code & Passion.</p>
+    </footer>
 
     <script>
-        const cursor = document.getElementById('cursor');
-        window.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
-        });
-
-        // 简单的入场动画触发
-        const cards = document.querySelectorAll('.card');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.style.opacity = 1;
+        // 极简平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-        });
-        cards.forEach(card => {
-            card.style.opacity = 0;
-            observer.observe(card);
         });
     </script>
 </body>
