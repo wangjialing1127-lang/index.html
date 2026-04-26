@@ -3,108 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JIALING | 作品集</title>
+    <title>JIALING | 动态作品集</title>
     <style>
         :root {
-            --primary-glow: conic-gradient(from 180deg at 50% 50%, #16abff33 0deg, #0885ff33 55deg, #54d6ff33 120deg, #0071ff33 160deg, transparent 360deg);
+            --bg-color: #050505;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #0071ff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* 隐藏原生鼠标 */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            background-color: #050505;
+            background-color: var(--bg-color);
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            font-family: -apple-system, "SF Pro Display", sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* --- 1. 鼠标跟随动效 --- */
-        #cursor-dot {
-            width: 8px; height: 8px; background: #fff;
-            position: fixed; border-radius: 50%; pointer-events: none; z-index: 1000;
-            transition: transform 0.1s ease;
-        }
-        #cursor-outline {
-            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5);
-            position: fixed; border-radius: 50%; pointer-events: none; z-index: 999;
-            transition: transform 0.15s ease-out, background 0.3s ease;
-        }
-
-        /* --- 2. 视差背景装饰 --- */
-        .parallax-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary-glow);
-            filter: blur(80px); opacity: 0.5; z-index: -1;
+        /* --- 1. 背景流光动效 --- */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(22, 171, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(245, 198, 203, 0.1) 0%, transparent 40%);
+            filter: blur(100px);
+            z-index: -1;
+            animation: pulseBg 10s infinite alternate ease-in-out;
         }
 
-        /* --- 3. 导航栏 (液态玻璃) --- */
+        @keyframes pulseBg {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(5%, 5%); }
+        }
+
+        /* --- 2. 鼠标跟随 --- */
+        #cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 1000; }
+        #cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.4); position: fixed; border-radius: 50%; pointer-events: none; z-index: 999; transition: all 0.2s ease-out; }
+
+        /* --- 3. 导航栏 --- */
         nav {
-            position: fixed; top: 20px; width: 90%; max-width: 1200px; left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 40px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100;
+            position: fixed; top: 20px; width: 90%; max-width: 1200px; left: 50%; transform: translateX(-50%);
+            padding: 15px 40px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
         }
 
-        /* --- 4. 英雄区 (Hero Section) --- */
-        .hero {
-            height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding-top: 80px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 700; letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff 30%, #888);
+        /* --- 4. 英雄区 --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { 
+            font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.4));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1.2s ease-out;
         }
+        .hero p { color: #888; margin-top: 20px; opacity: 0; animation: fadeIn 1s 0.5s forwards; }
 
-        /* --- 5. 作品卡片 (液态玻璃 + Hover动效) --- */
-        .projects {
-            padding: 100px 5%;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px; max-width: 1400px; margin: 0 auto;
-        }
-
+        /* --- 5. 作品卡片动效 --- */
+        .projects { padding: 50px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+        
         .card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 20px;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative; overflow: hidden;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 24px;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; transform: translateY(40px); /* 初始隐藏 */
         }
+
+        .card.show { opacity: 1; transform: translateY(0); } /* 入场动画状态 */
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-15px) scale(1.02);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .card-img {
-            width: 100%; height: 250px; background: #1a1a1a;
-            border-radius: 16px; margin-bottom: 20px;
-            overflow: hidden;
-        }
+        .card-img { width: 100%; height: 260px; background: #1a1a1a; border-radius: 20px; margin-bottom: 20px; overflow: hidden; position: relative; }
+        
+        /* 图片内缩放效果 */
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+        .card:hover .card-img img { transform: scale(1.1); }
 
-        /* 视差移动元素 */
-        .parallax-item { transition: transform 0.1s linear; }
-
-        .tag {
-            display: inline-block; padding: 4px 12px;
-            background: rgba(255,255,255,0.1); border-radius: 20px;
-            font-size: 12px; margin-top: 10px;
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     </style>
 </head>
@@ -112,82 +95,79 @@
 
     <div id="cursor-dot"></div>
     <div id="cursor-outline"></div>
-    <div class="parallax-bg"></div>
+    <div class="bg-glow"></div>
 
     <nav>
-        <div style="font-weight: bold; font-size: 1.2rem;">JIALING.</div>
-        <div style="display: flex; gap: 20px;">
-            <a href="#" class="nav-link" style="color: #fff; text-decoration: none;">作品</a>
-            <a href="#" class="nav-link" style="color: #888; text-decoration: none;">简历</a>
+        <div style="font-weight: 800; letter-spacing: 1px;">JIALING.</div>
+        <div style="display: flex; gap: 25px; font-size: 14px;">
+            <a href="#" style="color: #fff; text-decoration: none;">WORKS</a>
+            <a href="#" style="color: #666; text-decoration: none;">ABOUT</a>
         </div>
     </nav>
 
     <section class="hero">
-        <<h1 class="parallax-item" data-speed="2">ING. WORK COLLECTION</h1>
-        <p class="parallax-item" data-speed="1" style="color: #888; margin-top: 20px;">广告艺术设计 | 射手座的自由与创意</p>
+        <h1 id="hero-title">ING. WORK COLLECTION</h1>
+        <p>广告艺术设计 | 射手座的自由与创意</p>
     </section>
 
-    <section class="projects">
+    <section class="projects" id="project-section">
         <div class="card">
-            <div class="card-img">
-                <div style="width:100%; height:100%; background: linear-gradient(45deg, #222, #444);"></div>
-            </div>
-            <h3>未来主义 UI 系统</h3>
-            <p style="color: #888; font-size: 14px;">基于 Vision Pro 的空间设计探索</p>
-            <div class="tag">UI/UX</div>
+            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(45deg,#222,#333);"></div></div>
+            <h3>基础平面设计</h3>
+            <p style="color: #666; font-size: 13px;">BASIC GRAPHICS</p>
         </div>
-
         <div class="card">
-            <div class="card-img">
-                <div style="width:100%; height:100%; background: linear-gradient(135deg, #1a1a1a, #333);"></div>
-            </div>
-            <h3>液态品牌视觉</h3>
-            <p style="color: #888; font-size: 14px;">流体动态 Logo 与 3D 渲染</p>
-            <div class="tag">Branding</div>
+            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);"></div></div>
+            <h3>IP & 插画设计</h3>
+            <p style="color: #666; font-size: 13px;">IP & ILLUSTRATION</p>
+        </div>
+        <div class="card">
+            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(225deg,#222,#333);"></div></div>
+            <h3>文创产品设计</h3>
+            <p style="color: #666; font-size: 13px;">CULTURAL CREATIVE</p>
         </div>
     </section>
 
     <script>
-        // 1. 鼠标交互动效
+        // 1. 鼠标跟随逻辑
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
-
+        
         window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // 点跟随
-            dot.style.left = `${posX}px`;
-            dot.style.top = `${posY}px`;
-
-            // 圈延迟跟随 (模拟平滑感)
-            outline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // Hover 状态下鼠标变大
-        const hoverables = document.querySelectorAll('nav a, .card, .btn');
-        hoverables.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.style.transform = 'translate(-50%, -50%) scale(2)';
-                outline.style.background = 'rgba(255,255,255,0.1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.style.transform = 'translate(-50%, -50%) scale(1)';
-                outline.style.background = 'transparent';
-            });
-        });
-
-        // 2. 视差滚动效果
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxItems = document.querySelectorAll('.parallax-item');
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+            outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 400, fill: "forwards" });
             
-            parallaxItems.forEach(item => {
-                const speed = item.getAttribute('data-speed');
-                item.style.transform = `translateY(${scrolled * speed * 0.1}px)`;
+            // 视差微调标题
+            const moveX = (e.clientX - window.innerWidth/2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight/2) * 0.01;
+            document.getElementById('hero-title').style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // 2. 卡片滚动入场动画 (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('show');
+                    }, index * 150); // 间隔入场
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+        // 3. Hover 交互
+        document.querySelectorAll('.card, a').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                outline.style.transform = 'scale(1.5)';
+                outline.style.borderColor = '#0071ff';
+                outline.style.backgroundColor = 'rgba(0, 113, 255, 0.1)';
+            });
+            item.addEventListener('mouseleave', () => {
+                outline.style.transform = 'scale(1)';
+                outline.style.borderColor = 'rgba(255,255,255,0.4)';
+                outline.style.backgroundColor = 'transparent';
             });
         });
     </script>
