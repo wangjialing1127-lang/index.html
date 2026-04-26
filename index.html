@@ -3,172 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JIALING | 动态作品集</title>
+    <title>JIALING | 未来主义作品集</title>
     <style>
         :root {
-            --bg-color: #050505;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #0071ff;
+            --accent: #fff700;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: #000; color: #fff; font-family: "Inter", -apple-system, sans-serif; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg-color);
-            color: #ffffff;
-            font-family: -apple-system, "SF Pro Display", sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
+        /* --- 1. 液态背景系统 --- */
+        .bg-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #080808, #000);
+            z-index: -2;
         }
 
-        /* --- 1. 背景流光动效 --- */
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(22, 171, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(245, 198, 203, 0.1) 0%, transparent 40%);
-            filter: blur(100px);
+        /* 模拟参考图中的液态光影 */
+        .liquid-blob {
+            position: absolute; width: 600px; height: 600px;
+            background: linear-gradient(135deg, rgba(0, 230, 255, 0.15), rgba(255, 0, 255, 0.1));
+            filter: blur(80px); border-radius: 50%;
+            animation: move 20s infinite alternate ease-in-out;
             z-index: -1;
-            animation: pulseBg 10s infinite alternate ease-in-out;
         }
 
-        @keyframes pulseBg {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.2) translate(5%, 5%); }
+        @keyframes move {
+            from { transform: translate(-10%, -10%) rotate(0deg); }
+            to { transform: translate(20%, 10%) rotate(360deg); }
         }
 
-        /* --- 2. 鼠标跟随 --- */
-        #cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 1000; }
-        #cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.4); position: fixed; border-radius: 50%; pointer-events: none; z-index: 999; transition: all 0.2s ease-out; }
+        /* --- 2. 自定义鼠标 --- */
+        #cursor { width: 20px; height: 20px; border: 1.5px solid #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.1s; mix-blend-mode: difference; }
 
-        /* --- 3. 导航栏 --- */
+        /* --- 3. 玻璃导航栏 --- */
         nav {
-            position: fixed; top: 20px; width: 90%; max-width: 1200px; left: 50%; transform: translateX(-50%);
-            padding: 15px 40px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 40px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1200px; padding: 20px 40px;
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
 
-        /* --- 4. 英雄区 --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { 
-            font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.4));
+        /* --- 4. 英雄展示区 (重点：模拟 3D 悬浮) --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+
+        .ip-stage {
+            position: relative; width: 300px; height: 300px;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* 模拟参考图中的底座光影 */
+        .ip-stage::before {
+            content: ''; position: absolute; bottom: 10%; width: 150px; height: 40px;
+            background: rgba(255, 247, 0, 0.2); filter: blur(20px); border-radius: 50%;
+            animation: shadowPulse 3s infinite ease-in-out;
+        }
+
+        .ip-stage video {
+            width: 100%; height: 100%; object-fit: contain;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8));
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 5rem; font-weight: 800; letter-spacing: -3px; margin-top: -20px;
+            background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.3));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: fadeInDown 1.2s ease-out;
         }
-        .hero p { color: #888; margin-top: 20px; opacity: 0; animation: fadeIn 1s 0.5s forwards; }
 
-        /* --- 5. 作品卡片动效 --- */
-        .projects { padding: 50px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
-        
+        /* --- 5. 液态卡片展示区 --- */
+        .projects { padding: 100px 10%; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+
         .card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 24px;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0; transform: translateY(40px); /* 初始隐藏 */
+            background: var(--glass); border: 1px solid var(--border); border-radius: 40px;
+            padding: 10px; transition: 0.5s; position: relative; overflow: hidden;
         }
 
-        .card.show { opacity: 1; transform: translateY(0); } /* 入场动画状态 */
-
+        /* 参考图中的微光勾边效果 */
         .card:hover {
-            transform: translateY(-15px) scale(1.02);
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02) translateY(-10px);
         }
 
-        .card-img { width: 100%; height: 260px; background: #1a1a1a; border-radius: 20px; margin-bottom: 20px; overflow: hidden; position: relative; }
-        
-        /* 图片内缩放效果 */
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
-        .card:hover .card-img img { transform: scale(1.1); }
+        .card-inner {
+            background: rgba(0,0,0,0.4); border-radius: 32px; padding: 30px; height: 100%;
+        }
 
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card-img {
+            width: 100%; height: 280px; background: #111; border-radius: 24px; margin-bottom: 20px;
+            overflow: hidden; border: 1px solid var(--border);
+        }
+
+        .card-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 1s; }
+        .card:hover .card-img img { opacity: 1; transform: scale(1.1); }
 
     </style>
 </head>
 <body>
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-outline"></div>
-    <div class="bg-glow"></div>
+    <div id="cursor"></div>
+    <div class="bg-wrapper">
+        <div class="liquid-blob"></div>
+        <div class="liquid-blob" style="right: 0; bottom: 0; animation-delay: -5s;"></div>
+    </div>
 
     <nav>
-        <div style="font-weight: 800; letter-spacing: 1px;">JIALING.</div>
-        <div style="display: flex; gap: 25px; font-size: 14px;">
-            <a href="#" style="color: #fff; text-decoration: none;">WORKS</a>
-            <a href="#" style="color: #666; text-decoration: none;">ABOUT</a>
+        <div style="font-weight: 800;">JIALING.</div>
+        <div style="display: flex; gap: 30px; font-size: 14px;">
+            <a href="#" style="color:#fff; text-decoration:none;">作品集</a>
+            <a href="#" style="color:#666; text-decoration:none;">个人简历</a>
         </div>
     </nav>
 
     <section class="hero">
-        <h1 id="hero-title">ING. WORK COLLECTION</h1>
-        <p>广告艺术设计 | 射手座的自由与创意</p>
+        <div class="ip-stage">
+            <video autoplay loop muted playsinline>
+                <source src="ip-motion.mp4" type="video/mp4">
+            </video>
+        </div>
+        <h1>Design Fusion.</h1>
+        <p style="color: #666; letter-spacing: 5px; margin-top: 10px;">探索深色美学与流动交互的极限</p>
     </section>
 
-    <section class="projects" id="project-section">
+    <section class="projects">
         <div class="card">
-            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(45deg,#222,#333);"></div></div>
-            <h3>基础平面设计</h3>
-            <p style="color: #666; font-size: 13px;">BASIC GRAPHICS</p>
+            <div class="card-inner">
+                <div class="card-img"></div>
+                <h3 style="font-size: 1.5rem;">未来主义 UI 系统</h3>
+                <p style="color: #444; margin-top: 10px;">基于 Vision Pro 的空间设计探索</p>
+            </div>
         </div>
-        <div class="card">
-            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);"></div></div>
-            <h3>IP & 插画设计</h3>
-            <p style="color: #666; font-size: 13px;">IP & ILLUSTRATION</p>
-        </div>
-        <div class="card">
-            <div class="card-img"><div style="width:100%;height:100%;background:linear-gradient(225deg,#222,#333);"></div></div>
-            <h3>文创产品设计</h3>
-            <p style="color: #666; font-size: 13px;">CULTURAL CREATIVE</p>
-        </div>
-    </section>
+        </section>
 
     <script>
-        // 1. 鼠标跟随逻辑
-        const dot = document.getElementById('cursor-dot');
-        const outline = document.getElementById('cursor-outline');
-        
+        const cursor = document.getElementById('cursor');
         window.addEventListener('mousemove', (e) => {
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-            outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 400, fill: "forwards" });
-            
-            // 视差微调标题
-            const moveX = (e.clientX - window.innerWidth/2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight/2) * 0.01;
-            document.getElementById('hero-title').style.transform = `translate(${moveX}px, ${moveY}px)`;
+            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
         });
 
-        // 2. 卡片滚动入场动画 (Intersection Observer)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('show');
-                    }, index * 150); // 间隔入场
-                }
+        // 简单的入场动画触发
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.style.opacity = 1;
             });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.card').forEach(card => observer.observe(card));
-
-        // 3. Hover 交互
-        document.querySelectorAll('.card, a').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                outline.style.transform = 'scale(1.5)';
-                outline.style.borderColor = '#0071ff';
-                outline.style.backgroundColor = 'rgba(0, 113, 255, 0.1)';
-            });
-            item.addEventListener('mouseleave', () => {
-                outline.style.transform = 'scale(1)';
-                outline.style.borderColor = 'rgba(255,255,255,0.4)';
-                outline.style.backgroundColor = 'transparent';
-            });
+        });
+        cards.forEach(card => {
+            card.style.opacity = 0;
+            observer.observe(card);
         });
     </script>
 </body>
