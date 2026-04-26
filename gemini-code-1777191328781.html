@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designer Portfolio | 深色液态玻璃风</title>
+    <style>
+        :root {
+            --primary-glow: conic-gradient(from 180deg at 50% 50%, #16abff33 0deg, #0885ff33 55deg, #54d6ff33 120deg, #0071ff33 160deg, transparent 360deg);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* 隐藏原生鼠标 */
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- 1. 鼠标跟随动效 --- */
+        #cursor-dot {
+            width: 8px; height: 8px; background: #fff;
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 1000;
+            transition: transform 0.1s ease;
+        }
+        #cursor-outline {
+            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5);
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 999;
+            transition: transform 0.15s ease-out, background 0.3s ease;
+        }
+
+        /* --- 2. 视差背景装饰 --- */
+        .parallax-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-glow);
+            filter: blur(80px); opacity: 0.5; z-index: -1;
+        }
+
+        /* --- 3. 导航栏 (液态玻璃) --- */
+        nav {
+            position: fixed; top: 20px; width: 90%; max-width: 1200px; left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+        }
+
+        /* --- 4. 英雄区 (Hero Section) --- */
+        .hero {
+            height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding-top: 80px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700; letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff 30%, #888);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- 5. 作品卡片 (液态玻璃 + Hover动效) --- */
+        .projects {
+            padding: 100px 5%;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px; max-width: 1400px; margin: 0 auto;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-img {
+            width: 100%; height: 250px; background: #1a1a1a;
+            border-radius: 16px; margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        /* 视差移动元素 */
+        .parallax-item { transition: transform 0.1s linear; }
+
+        .tag {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(255,255,255,0.1); border-radius: 20px;
+            font-size: 12px; margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+    <div class="parallax-bg"></div>
+
+    <nav>
+        <div style="font-weight: bold; font-size: 1.2rem;">PORTFOLIO.</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="#" class="nav-link" style="color: #fff; text-decoration: none;">作品</a>
+            <a href="#" class="nav-link" style="color: #888; text-decoration: none;">简历</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="parallax-item" data-speed="2">Design Fusion.</h1>
+        <p class="parallax-item" data-speed="1" style="color: #888; margin-top: 20px;">探索深色美学与流动交互的极限</p>
+    </section>
+
+    <section class="projects">
+        <div class="card">
+            <div class="card-img">
+                <div style="width:100%; height:100%; background: linear-gradient(45deg, #222, #444);"></div>
+            </div>
+            <h3>未来主义 UI 系统</h3>
+            <p style="color: #888; font-size: 14px;">基于 Vision Pro 的空间设计探索</p>
+            <div class="tag">UI/UX</div>
+        </div>
+
+        <div class="card">
+            <div class="card-img">
+                <div style="width:100%; height:100%; background: linear-gradient(135deg, #1a1a1a, #333);"></div>
+            </div>
+            <h3>液态品牌视觉</h3>
+            <p style="color: #888; font-size: 14px;">流体动态 Logo 与 3D 渲染</p>
+            <div class="tag">Branding</div>
+        </div>
+    </section>
+
+    <script>
+        // 1. 鼠标交互动效
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // 点跟随
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
+
+            // 圈延迟跟随 (模拟平滑感)
+            outline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover 状态下鼠标变大
+        const hoverables = document.querySelectorAll('nav a, .card, .btn');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                outline.style.transform = 'translate(-50%, -50%) scale(2)';
+                outline.style.background = 'rgba(255,255,255,0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                outline.style.background = 'transparent';
+            });
+        });
+
+        // 2. 视差滚动效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxItems = document.querySelectorAll('.parallax-item');
+            
+            parallaxItems.forEach(item => {
+                const speed = item.getAttribute('data-speed');
+                item.style.transform = `translateY(${scrolled * speed * 0.1}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
