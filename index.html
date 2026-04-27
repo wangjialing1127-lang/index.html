@@ -15,31 +15,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         body { background: var(--bg-dark); color: #fff; font-family: "SF Pro Display", sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- 1. 修改核心：液态玻璃质感背景 --- */
+        /* --- 1. 背景优化：加入色彩与磨砂感 --- */
         .bg-container { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -1; overflow: hidden; background: #000;
-            transition: transform 0.2s ease-out; /* 视差过渡 */
         }
         .blob {
-            position: absolute; width: 70vw; height: 70vw;
-            border-radius: 50%; opacity: 0.25; mix-blend-mode: screen;
-            animation: move 20s infinite alternate ease-in-out;
+            position: absolute; width: 60vw; height: 60vw;
+            border-radius: 50%; opacity: 0.2; /* 调低透明度，让光感更细腻 */
+            filter: blur(100px); /* 增加模糊度 */
+            animation: move 25s infinite alternate ease-in-out;
         }
-        /* 调成了深蓝和深紫，透出来的光会更高级 */
+        /* 给两个光斑一点点颜色：一个深蓝，一个深紫 */
         .blob-1 { background: radial-gradient(circle, #2a45ff 0%, transparent 70%); top: -10%; left: -10%; }
         .blob-2 { background: radial-gradient(circle, #6020ff 0%, transparent 70%); bottom: -10%; right: -10%; animation-delay: -5s; }
         
-        /* 关键磨砂玻璃层 */
+        /* 磨砂层，防止背景太“硬” */
         .glass-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backdrop-filter: blur(120px); -webkit-backdrop-filter: blur(120px);
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+            backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px);
         }
 
         @keyframes move {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, 10%) scale(1.1); }
+            0% { transform: translate(-5%, -5%); }
+            100% { transform: translate(15%, 15%); }
         }
 
         /* --- 2. 玻璃导航栏优化 --- */
@@ -49,40 +48,40 @@
             background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* 增加深度投影 */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* 增加悬浮阴影 */
         }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
         .nav-logo img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); }
         .nav-links { display: flex; gap: 30px; font-size: 13px; letter-spacing: 1px; }
-        .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; transition: 0.3s; }
+        .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: 0.3s; }
         .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* --- 3. 英雄区 (Hero Section) --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify(content: center; padding: 0 10%; }
+        /* --- 3. 英雄区 --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
         .hero-label { font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 4px; margin-bottom: 20px; }
         .hero h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; letter-spacing: -3px; }
         .hero h1 span { color: rgba(255,255,255,0.2); }
-        .hero-sub {
-            max-width: 650px;
-            margin: 30px 0 50px;
-            color: rgba(255, 255, 255, 0.45); /* 调暗，突出标题 */
-            font-size: 1.1rem;
-            line-height: 1.8;
-            letter-spacing: 0.05em;
+        .hero-sub { 
+            max-width: 650px; margin: 30px 0 50px; 
+            color: rgba(255, 255, 255, 0.5); /* 调暗 */
+            font-size: 1.1rem; line-height: 1.8; /* 增加行高 */
+            letter-spacing: 0.05em; /* 增加字距 */
         }
+
         .cta-group { display: flex; gap: 20px; }
         .btn { 
             padding: 16px 35px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 500;
             transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border);
         }
         .btn-primary { background: #fff; color: #000; }
-        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,255,255,0.15); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
         .btn-secondary { color: #fff; background: var(--glass); backdrop-filter: blur(10px); }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 
-        /* --- 4. 作品卡片微调 --- */
+        /* --- 4. 作品展示区 --- */
         .work-section { padding: 100px 10%; }
         .section-title { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; }
+        
         .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
         .work-card { 
             background: var(--glass); border: 1px solid var(--border); border-radius: 30px;
@@ -90,20 +89,22 @@
             position: relative; overflow: hidden;
         }
         .work-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+        
         .work-img { width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 20px; overflow: hidden; }
         .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 1s; }
         .work-card:hover .work-img img { transform: scale(1.08); opacity: 1; }
+
         .work-info { padding: 25px 15px 15px; }
         .work-info h3 { font-size: 1.5rem; margin-bottom: 8px; }
         .work-info p { color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 1px; }
 
         #cursor { width: 15px; height: 15px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s; }
+
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
-    
     <div class="bg-container">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -159,17 +160,16 @@
 
     <script>
         const cursor = document.getElementById('cursor');
-        const bgContainer = document.querySelector('.bg-container');
+        const bg = document.querySelector('.bg-container');
 
         window.addEventListener('mousemove', (e) => {
-            // 鼠标指针
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
 
-            // 新增视差逻辑：背景随鼠标微动
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.015;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.015;
-            bgContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            // 视差效果：让背景光斑随鼠标轻微晃动，增加呼吸感
+            const x = (e.clientX - window.innerWidth / 2) * 0.015;
+            const y = (e.clientY - window.innerHeight / 2) * 0.015;
+            bg.style.transform = `translate(${x}px, ${y}px)`;
         });
 
         document.querySelectorAll('a, .btn').forEach(link => {
