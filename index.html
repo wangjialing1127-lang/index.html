@@ -6,167 +6,132 @@
     <title>JIALING | Visual Designer Portfolio</title>
     <style>
         :root {
-            --bg-dark: #020202; /* 极深背景色，衬托亮光 */
+            --accent: #fff;
             --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --glow-color: rgba(60, 100, 255, 0.15); /* 隐约透出的冷调光 */
+            --border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { 
-            background: var(--bg-dark); 
-            color: #fff; 
-            font-family: "SF Pro Display", -apple-system, sans-serif; 
-            overflow-x: hidden;
-            min-height: 200vh;
+        body { background: var(--bg-dark); color: #fff; font-family: "SF Pro Display", sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* --- 修改核心：液态玻璃质感背景 --- */
+        .bg-container { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; overflow: hidden; background: #000;
         }
 
-        /* --- 1. 核心：深色液态玻璃背景 --- */
-        .glass-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: var(--bg-dark);
-            overflow: hidden;
-        }
-
-        /* 后面隐隐透出的亮光斑 */
-        .light-blob {
-            position: absolute;
-            width: 80vw; height: 80vw;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
+        /* 后面隐隐透出的流动光斑 */
+        .blob {
+            position: absolute; width: 70vw; height: 70vw;
+            border-radius: 50%; 
+            opacity: 0.3; /* 控制光感的强弱，隐隐约约最合适 */
             mix-blend-mode: screen;
-            animation: drift 20s infinite alternate ease-in-out;
+            animation: move 20s infinite alternate ease-in-out;
         }
-        .blob-1 { background: radial-gradient(circle, #2a45ff 0%, transparent 70%); top: -20%; left: -10%; }
-        .blob-2 { background: radial-gradient(circle, #6020ff 0%, transparent 70%); bottom: -20%; right: -10%; animation-delay: -5s; }
-        .blob-3 { background: radial-gradient(circle, #ffffff 0%, transparent 70%); top: 40%; left: 30%; width: 40vw; height: 40vw; opacity: 0.1; }
+        /* 设置不同的颜色光斑，形成丰富的深色层次 */
+        .blob-1 { background: radial-gradient(circle, #2a45ff 0%, transparent 70%); top: -10%; left: -10%; }
+        .blob-2 { background: radial-gradient(circle, #6020ff 0%, transparent 70%); bottom: -10%; right: -10%; animation-delay: -5s; }
+        .blob-3 { background: radial-gradient(circle, #fff 0%, transparent 70%); top: 30%; left: 20%; width: 30vw; height: 30vw; opacity: 0.1; }
 
-        @keyframes drift {
+        @keyframes move {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, 15%) scale(1.1); }
+            100% { transform: translate(15%, 15%) scale(1.1); }
         }
 
-        /* 覆盖在亮光上的磨砂层 */
+        /* 关键层：覆盖在光斑上的高强度磨砂玻璃层 */
         .glass-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backdrop-filter: blur(100px); /* 极高模糊度形成液态感 */
-            -webkit-backdrop-filter: blur(100px);
-            background: rgba(0, 0, 0, 0.2); /* 压低亮光的亮度 */
+            backdrop-filter: blur(120px); /* 极高的模糊度，将色块打散成“液态感” */
+            -webkit-backdrop-filter: blur(120px);
+            background: rgba(0, 0, 0, 0.3); /* 控制整体色调的深沉度 */
         }
 
-        /* --- 2. 悬浮玻璃导航栏 --- */
+        /* --- 以下版式和交互逻辑保持完全一致 --- */
         nav {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            width: fit-content; padding: 12px 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-radius: 100px; display: flex; gap: 40px; align-items: center; z-index: 1000;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1000px; padding: 15px 30px;
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
-        .nav-links a { 
-            color: rgba(255,255,255,0.5); text-decoration: none; 
-            font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-        }
-        .nav-links a:hover { color: #fff; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .nav-logo img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); }
+        .nav-links { display: flex; gap: 30px; font-size: 13px; letter-spacing: 1px; }
+        .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* --- 3. Hero 内容 --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center;
-            padding: 0 5%;
-        }
-        .hero-label { font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 6px; margin-bottom: 20px; }
-        .hero h1 { 
-            font-size: clamp(3.5rem, 12vw, 8rem); font-weight: 800; line-height: 0.85; letter-spacing: -5px; 
-            background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.2));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .hero-sub { max-width: 700px; margin: 40px 0; color: rgba(255,255,255,0.5); font-size: 1.1rem; line-height: 1.8; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
+        .hero-label { font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 4px; margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1; letter-spacing: -3px; }
+        .hero-sub { max-width: 650px; margin: 30px 0 50px; color: rgba(255,255,255,0.6); font-size: 1.1rem; line-height: 1.6; }
 
-        /* --- 4. 按钮 --- */
         .cta-group { display: flex; gap: 20px; }
         .btn { 
-            padding: 18px 45px; border-radius: 100px; text-decoration: none; font-size: 14px; 
-            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border);
+            padding: 16px 35px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); border: 1px solid var(--border);
         }
         .btn-primary { background: #fff; color: #000; }
-        .btn-primary:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 30px rgba(255,255,255,0.1); }
-        .btn-secondary { color: #fff; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+        .btn-secondary { color: #fff; background: var(--glass); backdrop-filter: blur(10px); }
 
-        /* --- 5. 鼠标交互 --- */
-        #cursor { 
-            width: 20px; height: 20px; border: 1px solid #fff; position: fixed; 
-            border-radius: 50%; pointer-events: none; z-index: 9999; 
-            transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
+        .work-section { padding: 100px 10%; }
+        .section-title { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; }
+        .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .work-card { 
+            background: var(--glass); border: 1px solid var(--border); border-radius: 30px;
+            padding: 15px; text-decoration: none; color: #fff; transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative; overflow: hidden;
         }
+        .work-img { width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 20px; overflow: hidden; }
+        .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .work-info { padding: 25px 15px 15px; }
 
+        #cursor { width: 15px; height: 15px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s; }
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
 
-    <div class="glass-bg">
-        <div class="light-blob blob-1"></div>
-        <div class="light-blob blob-2"></div>
-        <div class="light-blob blob-3"></div>
-        <div class="glass-overlay"></div>
-    </div>
+    <div class="bg-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="glass-overlay"></div> </div>
 
     <nav>
+        <div class="nav-logo">
+            <img src="ip.png" alt="IP">
+            <span>JIALING W.</span>
+        </div>
         <div class="nav-links">
-            <a href="#work-01">Pantene</a>
-            <a href="#work-02">Giftbox</a>
-            <a href="#about">About</a>
-            <a href="mailto:jialing_design@foxmail.com">Contact</a>
+            <a href="#work-01">PANTENE</a>
+            <a href="#work-02">GIFTBOX</a>
+            <a href="#about">ABOUT</a>
+            <a href="mailto:jialing_design@foxmail.com">CONTACT</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="hero-label">VISUAL DESIGNER / ARTIST</div>
-        <h1>Design<br>Fusion.</h1>
-        <p class="hero-sub">探索深色美学与流动交互的极限。通过审美与逻辑的融合，为品牌创造长久价值。</p>
+        <div class="hero-label">Visual Designer / Artist</div>
+        <h1>Crafting brands<br><span>for the future.</span></h1>
+        <p class="hero-sub">Jialing Wang. 专注于品牌视觉系统升级与数字化艺术设计。通过液态美学与逻辑叙事的交织，为品牌赋予更具生命力的数字化表达。</p>
         <div class="cta-group">
-            <a href="#work" class="btn btn-primary">探索作品</a>
+            <a href="#work-01" class="btn btn-primary">查看作品集</a>
             <a href="mailto:jialing_design@foxmail.com" class="btn btn-secondary">联系邮箱</a>
         </div>
     </section>
 
     <script>
-        // 丝滑鼠标跟随
         const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        function animate() {
-            let dx = mouseX - cursorX;
-            let dy = mouseY - cursorY;
-            cursorX += dx * 0.15;
-            cursorY += dy * 0.15;
-            cursor.style.left = cursorX - (cursor.offsetWidth/2) + 'px';
-            cursor.style.top = cursorY - (cursor.offsetHeight/2) + 'px';
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // 悬停缩放效果
-        document.querySelectorAll('a, .btn').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(3)';
-                cursor.style.background = 'rgba(255,255,255,0.1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.background = 'transparent';
-            });
+        document.querySelectorAll('a, .btn').forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.style.transform = 'scale(4)');
+            link.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
         });
     </script>
 </body>
