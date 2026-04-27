@@ -12,11 +12,12 @@
             --bg-dark: #050505;
         }
 
-        /* 基础样式 */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        /* 隐藏原生滚动条，但保留滚动功能，让全屏视差更干净 */
         body { background: var(--bg-dark); color: #fff; font-family: "SF Pro Display", sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-        /* --- 1. 背景层修复：确保光斑可见 --- */
+        /* --- 1. 背景层 --- */
         .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #000; }
         .blob {
             position: absolute; width: 60vw; height: 60vw; border-radius: 50%; opacity: 0.4; 
@@ -24,15 +25,13 @@
         }
         .blob-1 { background: radial-gradient(circle, #2a45ff 0%, transparent 70%); top: -10%; left: -10%; }
         .blob-2 { background: radial-gradient(circle, #6020ff 0%, transparent 70%); bottom: -10%; right: -10%; animation-delay: -5s; }
-        
-        /* 玻璃蒙版层 */
         .glass-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backdrop-filter: blur(60px); -webkit-backdrop-filter: blur(60px); pointer-events: none; }
 
         @keyframes move { 0% { transform: translate(-5%, -5%); } 100% { transform: translate(10%, 10%); } }
 
-        /* --- 2. 动画核心：定义浮现动画 --- */
+        /* --- 2. 动画定义 --- */
         @keyframes revealUp {
-            from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+            from { opacity: 0; transform: translateY(40px); filter: blur(10px); }
             to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
@@ -43,6 +42,7 @@
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-radius: 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            transition: opacity 0.5s;
         }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
         .nav-logo img { width: 30px; height: 30px; border-radius: 50%; }
@@ -50,16 +50,19 @@
         .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; transition: 0.3s; }
         .nav-links a:hover { color: #fff; }
 
-        /* --- 4. 英雄区动画应用 --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
+        /* --- 4. 英雄区 (文字容器) --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; 
+            position: relative; z-index: 10;
+            /* 设定为 3D 渲染，确保视差滚动极度丝滑 */
+            will-change: transform, opacity;
+        }
         
-        /* 关键：给所有元素添加动画并预设透明度为 0 */
         .hero h1, .hero-sub, .cta-group, .hero-label {
             opacity: 0; 
             animation: revealUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* 设置进场节奏（Delay） */
         .hero-label { animation-delay: 0.2s; color: rgba(255,255,255,0.4); letter-spacing: 4px; margin-bottom: 20px; font-size: 14px; }
         .hero h1 { animation-delay: 0.4s; font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; line-height: 1.1; letter-spacing: -2px; }
         .hero h1 span { color: rgba(255,255,255,0.25); }
@@ -75,22 +78,19 @@
         .btn-secondary { color: #fff; background: var(--glass); }
 
         /* --- 5. 作品区 --- */
-        .work-section { padding: 100px 10%; }
+        .work-section { 
+            padding: 10vh 10% 100px; 
+            position: relative; z-index: 20; 
+            background: linear-gradient(to bottom, transparent, var(--bg-dark) 20%);
+        }
         .section-title { font-size: 13px; color: rgba(255,255,255,0.3); margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; }
         .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         
         .work-card { 
             background: var(--glass); border: 1px solid var(--border); border-radius: 24px;
             padding: 12px; text-decoration: none; color: #fff;
-            opacity: 0; 
-            animation: revealUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        /* 作品紧随其后出现 */
-        #work-01 { animation-delay: 1.0s; }
-        #work-02 { animation-delay: 1.2s; }
-
         .work-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
         .work-img { width: 100%; aspect-ratio: 16/10; background: #111; border-radius: 18px; overflow: hidden; }
         .work-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 1s; }
@@ -98,7 +98,7 @@
         .work-info h3 { font-size: 1.3rem; margin-bottom: 5px; }
         .work-info p { color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 1px; }
 
-        /* 鼠标跟随 */
+        /* 鼠标 */
         #cursor { width: 15px; height: 15px; background: #fff; position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s; }
 
     </style>
@@ -136,7 +136,7 @@
         </div>
     </section>
 
-    <section class="work-section">
+    <section class="work-section" id="work">
         <p class="section-title">Selected Projects</p>
         <div class="work-grid">
             <a href="#details" class="work-card" id="work-01">
@@ -161,6 +161,7 @@
     </section>
 
     <script>
+        // 1. 鼠标跟随逻辑
         const cursor = document.getElementById('cursor');
         window.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -171,6 +172,42 @@
             link.addEventListener('mouseenter', () => cursor.style.transform = 'scale(4)');
             link.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
         });
+
+        // 2. 核心大招：视差滚动与透明度渐变
+        const hero = document.querySelector('.hero');
+        const bg = document.querySelector('.bg-container');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            // 背景微动
+            const bgX = (mouseX - window.innerWidth / 2) * 0.01;
+            const bgY = (mouseY - window.innerHeight / 2) * 0.01;
+            bg.style.transform = `translate(${bgX}px, ${bgY}px)`;
+
+            // 视差关键：文字相对页面以 0.5 的倍速向下推，形成“比项目慢一半”的视差错觉
+            hero.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`;
+            
+            // 视差关键：根据滚动距离，让文字逐渐变透明（滚动约半屏时完全透明）
+            hero.style.opacity = Math.max(0, 1 - (scrollY / (window.innerHeight * 0.5)));
+        });
+
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        // 3. 自动向下滑动动画的编排
+        // 文字入场总共需要约 2 秒 (0.8s 延迟 + 1.2s 动画)。我们定在 2.5 秒时自动向下滑动。
+        setTimeout(() => {
+            const workSection = document.getElementById('work');
+            // 计算滚动位置：让作品区顶部露出到屏幕下方大约 1/3 处
+            const targetScrollPosition = workSection.offsetTop - (window.innerHeight * 0.65);
+            
+            window.scrollTo({
+                top: targetScrollPosition,
+                behavior: 'smooth'
+            });
+        }, 2500); 
+
     </script>
 </body>
 </html>
