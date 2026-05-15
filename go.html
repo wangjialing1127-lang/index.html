@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wang's Chess</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; background: #2c3e50; color: white; font-family: -apple-system; margin: 0; padding-top: 20px; height: 100vh; overflow: hidden; }
+        canvas { background: #dcb35c; box-shadow: 0 0 20px rgba(0,0,0,0.5); border: 2px solid #333; border-radius: 4px; touch-action: none; }
+        .btn { margin-top: 20px; padding: 12px 30px; background: #e67e22; color: white; border-radius: 25px; text-decoration: none; font-weight: bold; }
+        .info { margin: 15px; font-size: 18px; color: #ecf0f1; }
+    </style>
+</head>
+<body>
+    <div class="info" id="msg">🔴 黑方(Gemini)先行，该你(白)了</div>
+    <canvas id="b" width="360" height="360"></canvas>
+    <a href="javascript:location.reload()" class="btn">重新开局</a>
+    <script>
+        const c=document.getElementById('b'), x=c.getContext('2d');
+        let board=[], over=false;
+        for(let i=0;i<15;i++) board[i]=Array(15).fill(0);
+        function drawLine(){
+            x.strokeStyle="#333";
+            for(let i=0;i<15;i++){
+                x.moveTo(12+i*24, 12); x.lineTo(12+i*24, 348);
+                x.moveTo(12, 12+i*24); x.lineTo(348, 12+i*24);
+            }
+            x.stroke();
+        }
+        function piece(i,j,color){
+            x.beginPath(); x.arc(12+i*24, 12+j*24, 10, 0, 7);
+            x.fillStyle=color; x.fill();
+        }
+        c.onclick=(e)=>{
+            if(over) return;
+            let i=Math.round((e.offsetX-12)/24), j=Math.round((e.offsetY-12)/24);
+            if(board[i][j]==0){
+                piece(i,j,"white"); board[i][j]=2;
+                document.getElementById('msg').innerText="Gemini 正在阻击...";
+                setTimeout(()=>{
+                    for(let m=0;m<15;m++)for(let n=0;n<15;n++){
+                        if(board[m][n]==0){
+                            piece(m,n,"black"); board[m][n]=1;
+                            document.getElementById('msg').innerText="该你了，稳住！";
+                            return;
+                        }
+                    }
+                },500);
+            }
+        }
+        drawLine(); piece(7,7,"black"); board[7][7]=1;
+    </script>
+</body>
+</html>
